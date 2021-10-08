@@ -1,0 +1,124 @@
+2.1 Shop
+
+
+interface ProductInterface
+{
+	public function addProduct();
+	public function assignToCategory();	
+	public function displayProduct();
+}
+
+interface CategoryInterface
+{
+	public function addCategory();
+	public function assignProducts();
+}
+
+interface ShoppingCartInterface
+{
+	public function addToCart();
+	public function removeFromCart();
+	public function checkOut();
+	public function sendProduct();
+}
+
+class ShoppingCart implements ShoppingCartInterface
+{
+	public function addToCart()
+	{
+		if(isset($_SESSION["shopping_cart"]))
+		{
+			$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
+			if(!in_array($_GET["id"], $item_array_id)
+			{
+				$count = count($_SESSION["shopping_cart"]);
+				$item_array = array(
+					'item_id' => $_GET["id"],
+					'item_name' => $_POST["name"],
+					'item_price' => $_POST["price"],
+					'item_quantity' => $_GET["quantity"],
+				);
+				$_SESSION["shopping_cart"][$count] = $item_array;
+			} else {
+				//using pseudocode here 
+				$index = array_search($item_array_id, $item_array);
+				$_SESSION["shopping_cart"][$index]['quantity']++;
+			}
+		}
+		else
+		{
+			$item_array = array(
+				'item_id' => $_GET["id"],
+				'item_name' => $_POST["name"],
+				'item_price' => $_POST["price"],
+				'item_quantity' => $_GET["quantity"],
+			);
+			$_SESSION["shopping_cart"][0] = $item_array;
+		}
+		
+	}
+	public function removeFromCart()
+	{
+		if(isset($_SESSION["shopping_cart"]))
+		{
+			$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
+			if(!in_array($_GET["id"], $item_array_id)
+			{
+				unset($_SESSION["shopping_cart"][$item_array_id]);
+				
+			} else {
+				return "No item in the cart";
+			}
+		}
+		else
+		{
+			return "No item in the cart";
+		}
+	}
+	public function checkOut()
+	{
+	}
+	
+	public function sendProduct()
+	{
+	}
+}
+class DigitalProduct implements ProductInterface
+{
+	public $product_number;
+	public $product_name;
+	public $price;
+	public $product_link;
+	
+	public function __construct()
+	{
+	}
+	public function addProduct()
+	{
+	}
+	
+	public function assignToCategory()
+	{
+	}
+	
+}
+
+class NormalProduct implements ProductInterface
+{
+	public $product_number;
+	public $product_name;
+	public $quantity;
+	public $price;	
+	
+	public function addProduct()
+	{
+	}
+		
+	public function assignToCategory()
+	{
+	}
+	
+}
+
+
+
